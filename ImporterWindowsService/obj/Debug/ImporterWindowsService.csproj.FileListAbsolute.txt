@@ -1,0 +1,1 @@
+c:\users\apascual\documents\visual studio 2013\Projects\ImporterWindowsService\ImporterWindowsService\obj\Debug\ImporterWindowsService.csprojResolveAssemblyReference.cache
