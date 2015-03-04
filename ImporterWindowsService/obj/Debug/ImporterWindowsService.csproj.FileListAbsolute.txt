@@ -1,1 +1,2 @@
 c:\users\apascual\documents\visual studio 2013\Projects\ImporterWindowsService\ImporterWindowsService\obj\Debug\ImporterWindowsService.csprojResolveAssemblyReference.cache
+C:\Users\Alvin\Documents\Visual Studio 2013\Projects\ImporterWindowsService\ImporterWindowsService\bin\Debug\ImporterWindowsService.exe.config
