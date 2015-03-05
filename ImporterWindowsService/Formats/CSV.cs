@@ -23,7 +23,7 @@ namespace ImporterWindowsService.Formats
 
                 using(var ctx = new ImportDB()){
 
-                
+                    //Query database to check if serial number exists
                     var query = (from h in ctx.Hardwares
                                 join s in ctx.Sites on h.SiteId equals s.Id
                                 where h.SerialNo == serialNo
@@ -39,6 +39,8 @@ namespace ImporterWindowsService.Formats
                         {
                             DateTime timestamp = Convert.ToDateTime(parsedData.Rows[i].ItemArray[0].ToString());
                             double value = Double.Parse(parsedData.Rows[i].ItemArray[1].ToString());
+
+                            //Check if timestamp and value exists and then write to table
                             int existingRecords = ctx.Data.Where(r => r.Timestamp == timestamp && r.Value == (decimal)value).Count();
                             if (existingRecords <= 0)
                             {
