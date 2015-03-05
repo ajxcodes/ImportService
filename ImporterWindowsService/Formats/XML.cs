@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImporterWindowsService.DBContexts.ImportDB;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,14 +18,38 @@ namespace ImporterWindowsService.Formats
                 using (var Stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     XDocument file = XDocument.Load(Stream);
-
+                    serialNo = (from x in file.Descendants("system")
+                                         select x.Element("serialno").Value).First().ToString();
                     //LINQ to entities query to find serial number in data base
-                    processed = true;
-                    if(processed)
+                    using (var ctx = new ImportDB())
                     {
-                        //LINQ to XML query to find values in XML file
-                        //Iterate through values collection and add each value to the database
+                        var query = (from h in ctx.Hardwares
+                                    where h.SerialNo == serialNo
+                                    select h).ToList();
+                        
+                        foreach(var q in query)
+                        {
+                            var values = from v in file.Descendants("values")
+                                         select v;
+
+                            foreach(var v in values)
+                            {
+                                DateTime timestamp = Convert.ToDateTime(v.FirstAttribute.Value);
+                                double value = Convert.ToDouble(v.Value);
+                                int existingRecords = ctx.Data.Where(r => r.Timestamp == timestamp && r.Value == (decimal)value).Count();
+                                if(existingRecords <= 0)
+                                {
+                                    Datum d = new Datum();
+                                    d.HardwareId = q.Id;
+                                    d.Timestamp = timestamp;
+                                    d.Value = (decimal)value;
+                                    ctx.Data.Add(d);
+                                }
+                            }
+                        }
+                        ctx.SaveChanges();
                     }
+
                 }
 
                 processed = true;
