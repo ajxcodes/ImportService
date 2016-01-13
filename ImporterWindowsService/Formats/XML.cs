@@ -20,7 +20,7 @@ namespace ImporterWindowsService.Formats
                     XDocument file = XDocument.Load(Stream);
                     serialNo = (from x in file.Descendants("system")
                                          select x.Element("serialno").Value).First().ToString();
-                    //LINQ to entities query to find serial number in data base
+                    //LINQ to entities query to find serial number in database
                     using (var ctx = new ImportDB())
                     {
                         var query = (from h in ctx.Hardwares

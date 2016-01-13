@@ -14,6 +14,10 @@ namespace ImporterWindowsService.Formats
         public string filePath { get; set; }
         public string dbConnString { get; set; }
 
+        public ImportTask()
+        {
+
+        }
         public ImportTask (string path, string importType)
         {
             if (importType == "file")
